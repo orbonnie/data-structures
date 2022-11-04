@@ -13,13 +13,10 @@ def all_species(filename):
 
     species = set()
 
-    file = open(filename)
-    for line in file:
-        data = line.split('|')
-        print(data)
-        species.add(data[1])
+    data = all_data(filename)
 
-    file.close()
+    for line in data:
+        species.add(line[1])
 
     return species
 
@@ -37,15 +34,13 @@ def get_villagers_by_species(filename, search_string="All"):
 
     villagers = []
 
-    file = open(filename)
-    for line in file:
-        data = line.split('|')
-        if search_string == 'All':
-            villagers.append(data[0])
-        elif search_string == data[1]:
-            villagers.append(data[0])
+    data = all_data(filename)
 
-    file.close()
+    for line in data:
+        if search_string == 'All':
+            villagers.append(line[0])
+        elif search_string == line[1]:
+            villagers.append(line[0])
 
     return sorted(villagers)
 
@@ -63,27 +58,25 @@ def all_names_by_hobby(filename):
     villagers = []
 
     # Fitness, Nature, Education, Music, Fashion, and Play [3]
-    fitness = ['Fitness']
-    nature = ['Nature']
-    music = ['Music']
-    fashion = ['Fashion']
-    education = ['Education']
-    play = ['Play']
+    Fitness = ['Fitness']
+    Nature = ['Nature']
+    Music = ['Music']
+    Fashion = ['Fashion']
+    Education = ['Education']
+    Play = ['Play']
 
-    hobbies = [fitness, nature, music, fashion, education, play]
+    hobbies = [Fitness, Nature, Music, Fashion, Education, Play]
 
+    data = all_data(filename)
 
-    file = open(filename)
-
-    for line in file:
-        data = line.split('|')
+    for line in data:
         for hobby in hobbies:
-            if data[3] == hobby[0]:
-                hobby.append(data[0])
+            if line[3] == hobby[0]:
+                hobby.append(line[0])
 
-    file.close()
+    # hobbies = [row[1:] for row in hobbies]
 
-    return hobbies
+    return [sorted(arr[1:]) for arr in hobbies]
 
 
 def all_data(filename):
@@ -101,7 +94,13 @@ def all_data(filename):
 
     all_data = []
 
-    # TODO: replace this with your code
+    file = open(filename)
+
+    for line in file:
+        data = line.split('|')
+        all_data.append(tuple(data))
+
+    file.close()
 
     return all_data
 
@@ -120,7 +119,13 @@ def find_motto(filename, villager_name):
         - str: the villager's motto or None
     """
 
-    # TODO: replace this with your code
+    data = all_data(filename)
+
+    for line in data:
+        if line[0] == villager_name:
+            return line[4]
+
+    return None
 
 
 def find_likeminded_villagers(filename, villager_name):
@@ -138,4 +143,16 @@ def find_likeminded_villagers(filename, villager_name):
         {'Bella', ..., 'Carmen'}
     """
 
-    # TODO: replace this with your code
+    data = all_data(filename)
+    villager = tuple()
+    peeps = set()
+
+    for line in data:
+        if villager_name in line:
+            villager = line
+            break
+
+    for line in data:
+        if line[2] == villager[2]: peeps.add(line[0])
+
+    return peeps
