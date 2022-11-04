@@ -13,7 +13,13 @@ def all_species(filename):
 
     species = set()
 
-    # TODO: replace this with your code
+    file = open(filename)
+    for line in file:
+        data = line.split('|')
+        print(data)
+        species.add(data[1])
+
+    file.close()
 
     return species
 
@@ -31,7 +37,15 @@ def get_villagers_by_species(filename, search_string="All"):
 
     villagers = []
 
-    # TODO: replace this with your code
+    file = open(filename)
+    for line in file:
+        data = line.split('|')
+        if search_string == 'All':
+            villagers.append(data[0])
+        elif search_string == data[1]:
+            villagers.append(data[0])
+
+    file.close()
 
     return sorted(villagers)
 
@@ -46,9 +60,30 @@ def all_names_by_hobby(filename):
         - list[list[str]]: a list of lists containing names
     """
 
-    # TODO: replace this with your code
+    villagers = []
 
-    return []
+    # Fitness, Nature, Education, Music, Fashion, and Play [3]
+    fitness = ['Fitness']
+    nature = ['Nature']
+    music = ['Music']
+    fashion = ['Fashion']
+    education = ['Education']
+    play = ['Play']
+
+    hobbies = [fitness, nature, music, fashion, education, play]
+
+
+    file = open(filename)
+
+    for line in file:
+        data = line.split('|')
+        for hobby in hobbies:
+            if data[3] == hobby[0]:
+                hobby.append(data[0])
+
+    file.close()
+
+    return hobbies
 
 
 def all_data(filename):
@@ -94,7 +129,7 @@ def find_likeminded_villagers(filename, villager_name):
     Arguments:
         - filename (str): the path to a data file
         - villager_name (str): a villager's name
-    
+
     Return:
         - set[str]: a set of names
 
